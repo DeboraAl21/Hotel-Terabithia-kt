@@ -1,0 +1,281 @@
+package hotel
+
+import kotlin.system.exitProcess
+
+// ------------------------------------------------------------
+// Data class que representa um quarto do hotel.
+// numero  -> identificação do quarto (ex: "S1")
+// tipo    -> Standard, Executivo ou Luxo
+// preco   -> valor da diária
+// ------------------------------------------------------------
+data class Quarto(val numero: String, val tipo: String, val preco: Double)
+
+
+// ------------------------------------------------------------
+// Lista inicial contendo três quartos já cadastrados.
+// É a "base de dados" de quartos do sistema.
+// ------------------------------------------------------------
+val quartos = mutableListOf(
+    Quarto("S1", "Standard", 200.0),
+    Quarto("E1", "Executivo", 350.0),
+    Quarto("L1", "Luxo", 500.0)
+)
+
+
+// ------------------------------------------------------------
+// Função principal: inicia o programa chamando a apresentação
+// e depois o menu inicial.
+// ------------------------------------------------------------
+fun main() {
+    apresentacao()
+    inicio()
+}
+
+
+// ------------------------------------------------------------
+// Exibe saudação inicial e solicita o nome do usuário.
+// ------------------------------------------------------------
+fun apresentacao() {
+    println("Olá você está acessando o Hotel Terabithia.\n Informe o seu nome:\n")
+    val nome = readln()
+    println("$nome, seja bem vindo(a) ao Hotel Terabithia!\n")
+}
+
+
+// ------------------------------------------------------------
+// MENU PRINCIPAL DO SISTEMA
+// Usuário escolhe o que deseja fazer no hotel.
+// ------------------------------------------------------------
+fun inicio() {
+    println(
+        """
+O que vamos fazer hoje?:
+
+1 -> Cadastrar Quartos
+2 -> Cadastrar Hóspedes
+3 -> Abastecimento De Automoveis
+4 -> Sair Do Hote
+""".trimIndent()
+    )
+
+    // Lê a escolha e chama a função correspondente
+    when (readln().toIntOrNull()) {
+        1 -> cadastrarQuartos()
+        2 -> cadastrarHospedes()
+        3 -> abastecimentoDeAutomoveis()
+        4 -> sairDoHotel()
+        else -> erro()
+    }
+}
+
+/* ============================================================
+                MENU DE QUARTOS
+============================================================ */
+
+fun cadastrarQuartos() {
+
+    // Loop infinito permite que o usuário execute várias ações
+    while (true) {
+        println(
+            """
+Cadastro de Quartos
+Selecione uma opção:
+1. Cadastrar novo quarto
+2. Listar quartos
+3. Pesquisar quarto
+4. Sair
+""".trimIndent()
+        )
+
+        when (readln().toIntOrNull()) {
+
+            // Adicionar novo quarto
+            1 -> cadastrarNovoQuarto()
+
+            // Mostrar todos os quartos já cadastrados
+            2 -> listarQuartos()
+
+            // Buscar quarto por número ou tipo
+            3 -> pesquisarQuarto()
+
+            // Voltar ao menu principal
+            4 -> voltarMenuPrincipal()
+
+            else -> println("Por favor, informe um número entre 1 e 4.")
+        }
+    }
+}
+
+
+// ------------------------------------------------------------
+// Cadastra manualmente um novo quarto no sistema
+// ------------------------------------------------------------
+fun cadastrarNovoQuarto() {
+
+    println("Informe o número do quarto:")
+    val numero = readln()
+
+    println("Informe o tipo (Standard, Executivo ou Luxo):")
+    val tipo = readln()
+
+    println("Informe o preço:")
+    val preco = readln().toDouble()
+
+    // Adiciona novo quarto na lista global
+    quartos.add(Quarto(numero, tipo, preco))
+
+    println("Quarto cadastrado com sucesso!")
+}
+
+
+// ------------------------------------------------------------
+// Lista todos os quartos do hotel
+// ------------------------------------------------------------
+fun listarQuartos() {
+    println("Lista de Quartos:")
+    quartos.forEach { println(it) }
+}
+
+
+// ------------------------------------------------------------
+// Pesquisa um quarto pelo número ou tipo
+// ------------------------------------------------------------
+fun pesquisarQuarto() {
+    println("Informe o número ou tipo para buscar:")
+    val busca = readln()
+
+    // Filtra quartos com base no texto informado
+    val resultados = quartos.filter {
+        it.numero.contains(busca, ignoreCase = true) ||
+                it.tipo.contains(busca, ignoreCase = true)
+    }
+
+    if (resultados.isEmpty()) println("Nenhum quarto encontrado.")
+    else resultados.forEach { println(it) }
+}
+
+
+// ------------------------------------------------------------
+// Volta para o menu principal
+// ------------------------------------------------------------
+fun voltarMenuPrincipal() {
+    println("Voltando ao menu principal...")
+    inicio()
+}
+
+/* ============================================================
+                HÓSPEDES
+============================================================ */
+
+fun cadastrarHospedes() {
+
+    // Lista inicial de hóspedes fictícios
+    val listaHospedes = mutableListOf(
+        "Carlos Villagran", "Maria Antonieta", "Roberto Gómez",
+        "Florinda Meza", "Ramón Valdés", "Rubén Aguirre",
+        "Angelines Fernández", "Edgar Vivar", "Horácio Gómez",
+        "Raúl Padilla"
+    )
+
+    // Loop do submenu
+    while (true) {
+        println(
+            """
+Cadastro de Hóspedes
+Selecione uma opção:
+1. Cadastrar
+2. Pesquisar
+3. Sair
+""".trimIndent()
+        )
+
+        when (readln().toIntOrNull()) {
+
+            // Cadastrar novo hóspede
+            1 -> cadastrarHospede(listaHospedes)
+
+            // Pesquisar por nome
+            2 -> pesquisarHospede(listaHospedes)
+
+            // Voltar ao menu principal
+            3 -> sairCadastroHospedes()
+
+            else -> println("Por favor, informe um número entre 1 e 3.")
+        }
+    }
+}
+
+
+// ------------------------------------------------------------
+// Adiciona novo hóspede à lista
+// ------------------------------------------------------------
+fun cadastrarHospede(listaHospedes: MutableList<String>) {
+    println("Informe o nome do Hóspede:")
+    val novo = readln()
+    listaHospedes.add(novo)
+    println("$novo cadastrado com sucesso!")
+}
+
+
+// ------------------------------------------------------------
+// Pesquisa hóspedes por nome (ou parte do nome)
+// ------------------------------------------------------------
+fun pesquisarHospede(listaHospedes: MutableList<String>) {
+    println("Informe o nome para buscar:")
+    val busca = readln()
+
+    val resultados = listaHospedes.filter { it.contains(busca, ignoreCase = true) }
+
+    if (resultados.isEmpty()) println("Nenhum hóspede encontrado.")
+    else resultados.forEach { println(it) }
+}
+
+
+// ------------------------------------------------------------
+// Volta ao menu principal
+// ------------------------------------------------------------
+fun sairCadastroHospedes() {
+    println("Saindo do cadastro de hóspedes...")
+    inicio()
+}
+
+/* ============================================================
+                OUTROS
+============================================================ */
+
+// Função futura (ainda não implementada)
+fun abastecimentoDeAutomoveis() {
+    println("Função ainda não implementada.")
+}
+
+
+// ------------------------------------------------------------
+// Tratamento de erro do menu principal
+// ------------------------------------------------------------
+fun erro() {
+    println("Por favor, informe um número entre 1 e 4.")
+    inicio()
+}
+
+
+// ------------------------------------------------------------
+// Finaliza o programa
+// ------------------------------------------------------------
+fun sairDoHotel() {
+    println("Você deseja sair? S/N")
+
+    if (readln().uppercase() == "S") {
+        println("Até logo!")
+        exitProcess(0)
+    } else inicio()
+}
+
+//---------- class -----------
+package Hotel
+
+class Quarto(
+    val numero: String,
+    val tipo: String,
+    val preco: Double,
+    var disponivel: Boolean = true
+)
