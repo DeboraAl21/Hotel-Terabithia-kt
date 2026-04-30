@@ -16,19 +16,44 @@ data class Quarto(val numero: String, val tipo: String, val preco: Double)
 // É a "base de dados" de quartos do sistema.
 // ------------------------------------------------------------
 val quartos = mutableListOf(
-    Quarto("S1", "Standard", 200.0),
-    Quarto("E1", "Executivo", 350.0),
-    Quarto("L1", "Luxo", 500.0)
+// ------ STANDARD ------
+        Quarto("101", "Standard", 150.0),
+Quarto("102", "Standard", 150.0),
+Quarto("103", "Standard", 150.0),
+Quarto("104", "Standard", 150.0),
+Quarto("105", "Standard", 150.0),
+Quarto("106", "Standard", 150.0),
+Quarto("107", "Standard", 150.0),
+
+// ------ EXECUTIVO ------
+Quarto("201", "Executivo", 250.0),
+Quarto("202", "Executivo", 250.0),
+Quarto("203", "Executivo", 250.0),
+Quarto("204", "Executivo", 250.0),
+Quarto("205", "Executivo", 250.0),
+Quarto("206", "Executivo", 250.0),
+Quarto("207", "Executivo", 250.0),
+
+// ------ LUXO ------
+Quarto("301", "Luxo", 400.0),
+Quarto("302", "Luxo", 400.0),
+Quarto("303", "Luxo", 400.0),
+Quarto("304", "Luxo", 400.0),
+Quarto("305", "Luxo", 400.0),
+Quarto("306", "Luxo", 400.0)
 )
-
-
+//----------------------------------------------------------
+//senha
+var senha: Int = 2678
+var tentativas: Int = 3
 // ------------------------------------------------------------
 // Função principal: inicia o programa chamando a apresentação
 // e depois o menu inicial.
 // ------------------------------------------------------------
 fun main() {
+
     apresentacao()
-    inicio()
+
 }
 
 
@@ -36,9 +61,29 @@ fun main() {
 // Exibe saudação inicial e solicita o nome do usuário.
 // ------------------------------------------------------------
 fun apresentacao() {
+
     println("Olá você está acessando o Hotel Terabithia.\n Informe o seu nome:\n")
     val nome = readln()
-    println("$nome, seja bem vindo(a) ao Hotel Terabithia!\n")
+
+//Valida a senha e com um laço de repetição faz com que após 3 tentativas erradas ele bloqueie o acesso.
+    while (tentativas >= 0) {
+
+        println("Informe a senha: \n")
+        senha = readln().toInt()
+
+        if (senha == 2678) {
+            println("Bem-vindo(a) ao Hotel Terabithia, ${nome}. É um imenso prazer ter você por aqui! \n")
+            inicio()
+            return
+        } else {
+            tentativas--
+            println("A senha está incorreta! Tentativas restantes: $tentativas\n")
+
+            apresentacao()
+        }
+    }
+    println("você errou a senha 3 vezes. Acesso bloqueado!")
+
 }
 
 
@@ -53,8 +98,9 @@ O que vamos fazer hoje?:
 
 1 -> Cadastrar Quartos
 2 -> Cadastrar Hóspedes
-3 -> Abastecimento De Automoveis
-4 -> Sair Do Hote
+3 -> Reservas de Quartos
+4 -> Abastecimento De Automoveis
+5 -> Sair Do Hotel
 """.trimIndent()
     )
 
@@ -62,8 +108,9 @@ O que vamos fazer hoje?:
     when (readln().toIntOrNull()) {
         1 -> cadastrarQuartos()
         2 -> cadastrarHospedes()
-        3 -> abastecimentoDeAutomoveis()
-        4 -> sairDoHotel()
+        3 -> reservaQuartos()
+        4 -> abastecimentoDeAutomoveis()
+        5 -> sairDoHotel()
         else -> erro()
     }
 }
@@ -235,10 +282,15 @@ fun pesquisarHospede(listaHospedes: MutableList<String>) {
 // Volta ao menu principal
 // ------------------------------------------------------------
 fun sairCadastroHospedes() {
-    println("Saindo do cadastro de hóspedes...")
+    println("Saindo do cadastro de hóspedes. Muito obrigado e até logo.")
     inicio()
 }
 
+// Reservas de Quartos
+// ------------------------------------------------------------
+fun reservaQuartos(){
+    
+}
 /* ============================================================
                 OUTROS
 ============================================================ */
@@ -253,7 +305,7 @@ fun abastecimentoDeAutomoveis() {
 // Tratamento de erro do menu principal
 // ------------------------------------------------------------
 fun erro() {
-    println("Por favor, informe um número entre 1 e 4.")
+    println("Por favor, informe um número entre 1 e 5.")
     inicio()
 }
 
@@ -265,7 +317,7 @@ fun sairDoHotel() {
     println("Você deseja sair? S/N")
 
     if (readln().uppercase() == "S") {
-        println("Até logo!")
+        println("Muito obrigado e até logo!")
         exitProcess(0)
     } else inicio()
 }
