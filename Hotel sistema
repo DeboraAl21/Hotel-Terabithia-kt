@@ -226,7 +226,7 @@ fun cadastrarNovoQuarto() {
     // Adiciona novo quarto na lista global
     quartos.add(Quarto(numero, tipo, preco))
 
-    println("Quarto cadastrado com sucesso!")
+    println("Quarto cadastrado com sucesso!\n")
 }
 
 
@@ -234,28 +234,13 @@ fun cadastrarNovoQuarto() {
 // Lista todos os quartos do hotel
 // ------------------------------------------------------------
 fun listarQuartos() {
-    println("Lista de Quartos:")
-    quartos.forEach { println(quartos) }
-}
-
-/*
-
-fun pesquisarHospede(listaHospedes: MutableList<Hospede>) {
-
-    println("Informe o nome para buscar:")
-    val busca = readln()
-
-    val resultados = listaHospedes.filter {
-        it.nome.contains(busca, ignoreCase = true)
-    }
-
-    if (resultados.isEmpty()) {
-        println("Nenhum hóspede encontrado.")
-    } else {
-        resultados.forEach { println(it) }
+    println("--- Lista de Quartos ---\n")
+    for (quarto in quartos) {
+        // Aqui você escolhe exatamente o que quer exibir
+        println("Quarto: ${quarto.numero} | Tipo: ${quarto.tipo} | Preço: R$ ${quarto.preco}\n")
     }
 }
-*/
+
 
 // ------------------------------------------------------------
 // Pesquisa um quarto pelo número ou tipo
@@ -265,13 +250,20 @@ fun pesquisarQuarto(quartos: MutableList<Quarto>) {
     val busca = readln()
 
     // Filtra quartos com base no texto informado
-    val resultados = quartos.filter{
+    val resultados = quartos.filter {
         it.numero.contains(busca, ignoreCase = true) ||
                 it.tipo.contains(busca, ignoreCase = true)
     }
 
-    if (resultados.isEmpty()) println("Nenhum quarto encontrado.")
-    else resultados.forEach { println(it) }
+    if (resultados.isEmpty()) {
+        println("Nenhum quarto encontrado.")
+    } else {
+        println("--- Resultados encontrados ---\n")
+        resultados.forEach { quarto ->
+            // AQUI ESTÁ O SEGREDO: Formatar a saída
+            println("Quarto: ${quarto.numero} | Categoria: ${quarto.tipo} | Diária: R$ ${quarto.preco}\n")
+        }
+    }
 }
 
 
@@ -385,8 +377,56 @@ fun sairCadastroHospedes() {
 // Reservas de Quartos
 // ------------------------------------------------------------
 fun reservaQuartos(){
+        println("--- Reserva de Quartos ---")
 
-}
+        // 1. Localizar o Hóspede
+        println("Informe o nome do hóspede para a reserva:")
+        val nomeBusca = readln()
+        val hospede = listaHospedes.find { it.nome.contains(nomeBusca, ignoreCase = true) }
+
+        if (hospede == null) {
+            println("Hóspede não encontrado! Cadastre-o primeiro.")
+            return inicio()
+        }
+
+        // 2. Localizar o Quarto
+        println("Informe o número do quarto desejado:")
+        val numQuarto = readln()
+        val quarto = quartos.find { it.numero == numQuarto }
+
+        if (quarto == null) {
+            println("Quarto não encontrado!")
+            return inicio()
+        }
+
+        // 3. Definir tempo de estadia
+        println("Quantos dias de reserva?")
+        val dias = readln().toIntOrNull() ?: 0
+
+        if (dias <= 0) {
+            println("Quantidade de dias inválida.")
+            return inicio()
+        }
+
+        // 4. Calcular e Confirmar
+        val valorTotal = quarto.preco * dias
+        println("Resumo da Reserva:")
+        println("Hóspede: ${hospede.nome}")
+        println("Quarto: ${quarto.numero} (${quarto.tipo})")
+        println("Total: R$ $valorTotal")
+
+        println("Confirmar reserva? (S/N)")
+        if (readln().uppercase() == "S") {
+            val novaReserva = Reserva(hospede, quarto, dias, valorTotal)
+            listaReservas.add(novaReserva)
+            println("Reserva realizada com sucesso!")
+        } else {
+            println("Reserva cancelada.")
+        }
+
+        inicio() // Volta ao menu principal
+    }
+
 /* ============================================================
                 OUTROS
 ============================================================ */
