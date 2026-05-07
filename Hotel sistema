@@ -101,6 +101,10 @@ val listaHospedes = mutableListOf(
 //senha
 var senha: Int = 2678
 var tentativas: Int = 3
+
+//Evento: quantidade acentos
+var acentos: Int = 300
+
 // ------------------------------------------------------------
 // Função principal: inicia o programa chamando a apresentação
 // e depois o menu inicial.
@@ -155,6 +159,7 @@ O que vamos fazer hoje?:
 2 -> Cadastrar Hóspedes
 3 -> Reservas de Quartos
 4 -> Abastecimento De Automoveis
+5 -> Eventos
 5 -> Sair Do Hotel
 """.trimIndent()
     )
@@ -165,7 +170,8 @@ O que vamos fazer hoje?:
         2 -> cadastrarHospedes()
         3 -> reservaQuartos()
         4 -> abastecimentoDeAutomoveis()
-        5 -> sairDoHotel()
+        5 -> eventos()
+        6 -> sairDoHotel()
         else -> erro()
     }
 }
@@ -435,6 +441,57 @@ fun reservaQuartos(){
 fun abastecimentoDeAutomoveis() {
     println("Função ainda não implementada.")
 }
+
+//-------Eventos-------
+fun eventos(){
+println("-----_ Seja vem vindo(a) aos nossos eventos _-----\n")
+    println("Informe o nome da empresa: ")
+    val nomeEmpresa = readln()
+
+    println("""Auditório Laranja: 150 lugares + espaço até 70 cadeiras.
+               Auditório Colorado: 350 lugares sem espaço para mais cadeiras.      
+      
+            """ )
+    println("Informe a quantidade de convidados:")
+    val convidados = readln().toInt()
+
+    if (convidados < 0){
+        println("Quantidade inválida")
+    }
+    else if (convidados > 350){
+        println("Capacidade excedida")
+    }
+    else if (convidados > 220){
+        println("A melhor opção de auditório para seu evento é o -- Colorado --\n")
+        println("Continuar com a reserva do evento? S/N")
+        if (readln().uppercase() == "S") {
+            exitProcess(0)
+        } else reservarEvento()
+    }
+    else{
+        println("A melhor opção de auditório para seu evento é o -- Laranja  --")
+        println("Continuar com a reserva do evento? S/N")
+        if (readln().uppercase() == "S") {
+            exitProcess(0)
+        } else reservarEvento()
+    }
+
+}
+
+fun reservarEvento(){
+
+    println("Horários disponíveis:" +
+            "Segunda a sexta: 07h–23h\n" +
+            "Sábado e domingo: 07h–15h\n" +
+            "Informe o dia desejado:")
+    val diaEvento = readln()
+
+    println("Informe a hora inicial: ")
+    val horaInicial = readln()
+    
+
+}
+
 
 
 // ------------------------------------------------------------
