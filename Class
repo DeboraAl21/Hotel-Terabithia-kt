@@ -1,0 +1,30 @@
+// ------- Class ---------
+//-------hotel----------
+package hotel
+
+class Quarto(
+    val numero: String,
+    val tipo: String,
+    val preco: Double,
+    var disponivel: Boolean = true
+)
+
+//-------hospede----------
+import java.time.LocalDate
+import java.util.Date
+data class Hospede(
+    val nome: String,
+    val DocIdentidade: String,
+    val cpf: String,
+    val dataNasc: Date,
+    val nacionalidade: String,
+    var ativo: Boolean = true
+)
+
+//-------Reserva----------
+
+package hotel
+
+class Reserva {
+
+}
