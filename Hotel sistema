@@ -1,15 +1,8 @@
 package hotel
 
 import kotlin.system.exitProcess
-
-// ------------------------------------------------------------
-// Data class que representa um quarto do hotel.
-// numero  -> identificação do quarto (ex: "S1")
-// tipo    -> Standard, Executivo ou Luxo
-// preco   -> valor da diária
-// ------------------------------------------------------------
-data class Quarto(val numero: String, val tipo: String, val preco: Double)
-
+import java.text.SimpleDateFormat
+import java.util.Date
 
 // ------------------------------------------------------------
 // Lista inicial contendo três quartos já cadastrados.
@@ -17,30 +10,92 @@ data class Quarto(val numero: String, val tipo: String, val preco: Double)
 // ------------------------------------------------------------
 val quartos = mutableListOf(
 // ------ STANDARD ------
-        Quarto("101", "Standard", 150.0),
-Quarto("102", "Standard", 150.0),
-Quarto("103", "Standard", 150.0),
-Quarto("104", "Standard", 150.0),
-Quarto("105", "Standard", 150.0),
-Quarto("106", "Standard", 150.0),
-Quarto("107", "Standard", 150.0),
+    Quarto("101", "Standard", 150.0),
+    Quarto("102", "Standard", 150.0),
+    Quarto("103", "Standard", 150.0),
+    Quarto("104", "Standard", 150.0),
+    Quarto("105", "Standard", 150.0),
+    Quarto("106", "Standard", 150.0),
+    Quarto("107", "Standard", 150.0),
 
 // ------ EXECUTIVO ------
-Quarto("201", "Executivo", 250.0),
-Quarto("202", "Executivo", 250.0),
-Quarto("203", "Executivo", 250.0),
-Quarto("204", "Executivo", 250.0),
-Quarto("205", "Executivo", 250.0),
-Quarto("206", "Executivo", 250.0),
-Quarto("207", "Executivo", 250.0),
+    Quarto("201", "Executivo", 250.0),
+    Quarto("202", "Executivo", 250.0),
+    Quarto("203", "Executivo", 250.0),
+    Quarto("204", "Executivo", 250.0),
+    Quarto("205", "Executivo", 250.0),
+    Quarto("206", "Executivo", 250.0),
+    Quarto("207", "Executivo", 250.0),
 
 // ------ LUXO ------
-Quarto("301", "Luxo", 400.0),
-Quarto("302", "Luxo", 400.0),
-Quarto("303", "Luxo", 400.0),
-Quarto("304", "Luxo", 400.0),
-Quarto("305", "Luxo", 400.0),
-Quarto("306", "Luxo", 400.0)
+    Quarto("301", "Luxo", 400.0),
+    Quarto("302", "Luxo", 400.0),
+    Quarto("303", "Luxo", 400.0),
+    Quarto("304", "Luxo", 400.0),
+    Quarto("305", "Luxo", 400.0),
+    Quarto("306", "Luxo", 400.0)
+)
+val sdf = SimpleDateFormat("dd/MM/yyyy")
+
+// Lista inicial de hóspedes fictícios
+val listaHospedes = mutableListOf(
+    Hospede(
+        nome = "Carlos Eduardo Mendes",
+        DocIdentidade = "MG-12.345.678",
+        cpf = "123.456.789-01",
+        dataNasc = sdf.parse("15/03/1985"),
+        nacionalidade = "Brasileiro"
+    ),
+    Hospede(
+        nome = "Fernanda Alves Rocha",
+        DocIdentidade = "SP-45.987.321",
+        cpf = "234.567.890-12",
+        dataNasc = sdf.parse("22/11/1992"),
+        nacionalidade = "Brasileira"
+    ),
+    Hospede(
+        nome = "Lucas Henrique Souza",
+        DocIdentidade = "RJ-78.654.123",
+        cpf = "345.678.901-23",
+        dataNasc = sdf.parse("08/07/1998"),
+        nacionalidade = "Brasileiro"
+    ),
+    Hospede(
+        nome = "Mariana Costa Lima",
+        DocIdentidade = "PR-23.456.789",
+        cpf = "456.789.012-34",
+        dataNasc = sdf.parse("30/01/1989"),
+        nacionalidade = "Brasileira"
+    ),
+    Hospede(
+        nome = "Thiago Martins Ferreira",
+        DocIdentidade = "RS-56.123.987",
+        cpf = "567.890.123-45",
+        dataNasc = sdf.parse("12/09/1975"),
+        nacionalidade = "Brasileiro",
+        ativo = false
+    ),
+    Hospede(
+        nome = "Ana Beatriz Oliveira",
+        DocIdentidade = "BA-98.765.432",
+        cpf = "678.901.234-56",
+        dataNasc = sdf.parse("05/05/2000"),
+        nacionalidade = "Brasileira"
+    ),
+    Hospede(
+        nome = "Roberto Silva Gomes",
+        DocIdentidade = "SC-34.876.210",
+        cpf = "789.012.345-67",
+        dataNasc = sdf.parse("18/12/1980"),
+        nacionalidade = "Brasileiro"
+    ),
+    Hospede(
+        nome = "Juliana Pereira Santos",
+        DocIdentidade = "CE-67.543.219",
+        cpf = "890.123.456-78",
+        dataNasc = sdf.parse("27/04/1995"),
+        nacionalidade = "Brasileira"
+    )
 )
 //----------------------------------------------------------
 //senha
@@ -66,10 +121,10 @@ fun apresentacao() {
     val nome = readln()
 
 //Valida a senha e com um laço de repetição faz com que após 3 tentativas erradas ele bloqueie o acesso.
-    while (tentativas >= 0) {
+    while (tentativas > 0) {
 
         println("Informe a senha: \n")
-        senha = readln().toInt()
+        senha = readln().toIntOrNull() ?: 0
 
         if (senha == 2678) {
             println("Bem-vindo(a) ao Hotel Terabithia, ${nome}. É um imenso prazer ter você por aqui! \n")
@@ -79,7 +134,7 @@ fun apresentacao() {
             tentativas--
             println("A senha está incorreta! Tentativas restantes: $tentativas\n")
 
-            apresentacao()
+            continue
         }
     }
     println("você errou a senha 3 vezes. Acesso bloqueado!")
@@ -143,7 +198,7 @@ Selecione uma opção:
             2 -> listarQuartos()
 
             // Buscar quarto por número ou tipo
-            3 -> pesquisarQuarto()
+            3 -> pesquisarQuarto(quartos)
 
             // Voltar ao menu principal
             4 -> voltarMenuPrincipal()
@@ -180,19 +235,37 @@ fun cadastrarNovoQuarto() {
 // ------------------------------------------------------------
 fun listarQuartos() {
     println("Lista de Quartos:")
-    quartos.forEach { println(it) }
+    quartos.forEach { println(quartos) }
 }
 
+/*
+
+fun pesquisarHospede(listaHospedes: MutableList<Hospede>) {
+
+    println("Informe o nome para buscar:")
+    val busca = readln()
+
+    val resultados = listaHospedes.filter {
+        it.nome.contains(busca, ignoreCase = true)
+    }
+
+    if (resultados.isEmpty()) {
+        println("Nenhum hóspede encontrado.")
+    } else {
+        resultados.forEach { println(it) }
+    }
+}
+*/
 
 // ------------------------------------------------------------
 // Pesquisa um quarto pelo número ou tipo
 // ------------------------------------------------------------
-fun pesquisarQuarto() {
+fun pesquisarQuarto(quartos: MutableList<Quarto>) {
     println("Informe o número ou tipo para buscar:")
     val busca = readln()
 
     // Filtra quartos com base no texto informado
-    val resultados = quartos.filter {
+    val resultados = quartos.filter{
         it.numero.contains(busca, ignoreCase = true) ||
                 it.tipo.contains(busca, ignoreCase = true)
     }
@@ -216,13 +289,6 @@ fun voltarMenuPrincipal() {
 
 fun cadastrarHospedes() {
 
-    // Lista inicial de hóspedes fictícios
-    val listaHospedes = mutableListOf(
-        "Carlos Villagran", "Maria Antonieta", "Roberto Gómez",
-        "Florinda Meza", "Ramón Valdés", "Rubén Aguirre",
-        "Angelines Fernández", "Edgar Vivar", "Horácio Gómez",
-        "Raúl Padilla"
-    )
 
     // Loop do submenu
     while (true) {
@@ -256,25 +322,55 @@ Selecione uma opção:
 // ------------------------------------------------------------
 // Adiciona novo hóspede à lista
 // ------------------------------------------------------------
-fun cadastrarHospede(listaHospedes: MutableList<String>) {
+fun cadastrarHospede(listaHospedes: MutableList<Hospede>) {
+
     println("Informe o nome do Hóspede:")
-    val novo = readln()
-    listaHospedes.add(novo)
-    println("$novo cadastrado com sucesso!")
+    val nome = readln()
+
+    println("Informe seu Documento de Identidade:")
+    val docIdentidade = readln()
+
+    println("Informe seu CPF:")
+    val cpf = readln()
+
+    println("Informe a sua data de nascimento (dd/MM/yyyy):")
+    val dataNasc = sdf.parse(readln())
+
+    println("Informe a sua Nacionalidade:")
+    val nacionalidade = readln()
+
+    val hospede = Hospede(
+        nome = nome,
+        DocIdentidade = docIdentidade,
+        cpf = cpf,
+        dataNasc = dataNasc,
+        nacionalidade = nacionalidade
+    )
+
+    listaHospedes.add(hospede)
+
+    println("Hóspede cadastrado com sucesso!")
 }
 
 
 // ------------------------------------------------------------
 // Pesquisa hóspedes por nome (ou parte do nome)
 // ------------------------------------------------------------
-fun pesquisarHospede(listaHospedes: MutableList<String>) {
+
+fun pesquisarHospede(listaHospedes: MutableList<Hospede>) {
+
     println("Informe o nome para buscar:")
     val busca = readln()
 
-    val resultados = listaHospedes.filter { it.contains(busca, ignoreCase = true) }
+    val resultados = listaHospedes.filter {
+        it.nome.contains(busca, ignoreCase = true)
+    }
 
-    if (resultados.isEmpty()) println("Nenhum hóspede encontrado.")
-    else resultados.forEach { println(it) }
+    if (resultados.isEmpty()) {
+        println("Nenhum hóspede encontrado.")
+    } else {
+        resultados.forEach { println(it) }
+    }
 }
 
 
@@ -289,7 +385,7 @@ fun sairCadastroHospedes() {
 // Reservas de Quartos
 // ------------------------------------------------------------
 fun reservaQuartos(){
-    
+
 }
 /* ============================================================
                 OUTROS
@@ -321,13 +417,3 @@ fun sairDoHotel() {
         exitProcess(0)
     } else inicio()
 }
-
-//---------- class -----------
-package Hotel
-
-class Quarto(
-    val numero: String,
-    val tipo: String,
-    val preco: Double,
-    var disponivel: Boolean = true
-)
